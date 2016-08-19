@@ -40,7 +40,13 @@
   }
 
   function isMergableObject(target) {
-    return target !== null && typeof target === "object" && !(target instanceof Array) && !(target instanceof Date);
+    return (
+      target !== null
+      && typeof target === "object"
+      && !(target instanceof Array)
+      && !(target instanceof Date)
+      && !target._immutable === undefined
+    );
   }
 
   var mutatingObjectMethods = [
@@ -518,7 +524,7 @@
   }
 
   function Immutable(obj, options, stackRemaining) {
-    if (isImmutable(obj) || isReactElement(obj)) {
+    if (isImmutable(obj) || isReactElement(obj) || obj._immutable !== undefined) {
       return obj;
     } else if (obj instanceof Array) {
       return makeImmutableArray(obj.slice());
